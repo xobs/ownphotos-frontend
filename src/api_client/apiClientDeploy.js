@@ -20,7 +20,7 @@ function listener() {
  }
 }
 
-export var serverAddress = process.env.OWNPHOTOS_URL;
+export var serverAddress = process.env.REACT_APP_OWNPHOTOS_URL;
 
 export var Server = axios.create({
   baseURL: serverAddress + '/api/',
