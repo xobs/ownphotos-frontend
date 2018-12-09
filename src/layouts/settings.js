@@ -48,6 +48,7 @@ import {
   scanNextcloudPhotos,
   fetchPhotos
 } from "../actions/photosActions";
+import { trainFaces } from "../actions/facesActions";
 import { fetchUserSelfDetails } from "../actions/userActions";
 import CountryPiChart from "../components/charts/countryPiChart";
 import { CountStats } from "../components/statistics";
@@ -84,6 +85,10 @@ export class Settings extends Component {
 
   onPhotoScanButtonClick = e => {
     this.props.dispatch(scanPhotos());
+  };
+
+  onTrainFacesClick = e => {
+    this.props.dispatch(trainFaces());
   };
 
   onGenerateEventAlbumsButtonClick = e => {
@@ -577,7 +582,7 @@ export class Settings extends Component {
                   {this.props.util.countStats.num_people} People
                 </Header>
                 <Divider />
-                <Button fluid color="green">
+                <Button fluid color="green" onClick={this.onTrainFacesClick}>
                   <Icon name="lightning" /> Train Faces
                 </Button>
                 <Divider hidden />

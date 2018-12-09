@@ -48,6 +48,9 @@ import {
   manageUpdateUser
 } from "../actions/utilActions";
 import {
+  trainFaces
+} from "../actions/facesActions";
+import {
   scanPhotos,
   scanNextcloudPhotos,
   fetchPhotos
