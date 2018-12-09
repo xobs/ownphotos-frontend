@@ -1,22 +1,25 @@
-FROM ubuntu:16.04
-MAINTAINER ViViDboarder <vividboarder@gmail.com>
+FROM node:8-alpine
+MAINTAINER Sean Cross <sean@xobs.io>
 
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl --silent --location https://deb.nodesource.com/setup_6.x | bash && \
-    apt-get install -y nodejs && \
-    apt-get remove --purge -y curl && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && \
+#    apt-get install -y curl && \
+#    curl --silent --location https://deb.nodesource.com/setup_6.x | bash && \
+#    apt-get install -y nodejs && \
+#    apt-get remove --purge -y curl && \
+#    rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-ENV CLI_WIDTH 80
-COPY package.json /usr/src/app
-RUN npm install && npm cache clean --force
+COPY . /usr/src/app
+RUN apk update && apk add git && \
+    npm install && npm cache clean --force && npm run-script build
+
+ENV CLI_WIDTH=80 \
+    NODE_ENV=production \
+    PUBLIC_URL= \
+    HOST=0.0.0.0 \
+    PORT=3000
 
 EXPOSE 3000
-
-COPY . /usr/src/app
 
 CMD [ "npm", "start" ]
