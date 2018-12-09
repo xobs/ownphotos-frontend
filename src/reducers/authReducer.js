@@ -26,10 +26,9 @@ export default (state=initialState, action) => {
         case "LOGIN_REJECTED": 
             return {
             ...state,
-            errors: {non_field_errors:action.payload.message}
+            errors: action.payload.response||{non_field_errors:action.payload.message}
         }
         case "REFRESH_ACCESS_TOKEN_FULFILLED": 
-            console.log(action.payload)
             return {
             ...state,
             access: {

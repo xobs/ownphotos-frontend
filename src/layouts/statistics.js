@@ -39,9 +39,6 @@ export class Statistics extends Component {
   // componentWillUnmount() {
   //   clearInterval(this.state.intervalId)
   // }
-  componentWillMount() {
-    this.props.dispatch(fetchWordCloud())
-  }
 
   // onPhotoScanButtonClick = e => {
   //   this.props.dispatch(scanPhotos())
@@ -51,7 +48,6 @@ export class Statistics extends Component {
   render() {
     const {activeItem} = this.state
 
-    console.log(activeItem)
 
     return (
       <div style={{padding:10}}>

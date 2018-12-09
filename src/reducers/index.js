@@ -11,7 +11,8 @@ import photos from './photosReducer'
 import auth, * as fromAuth from './authReducer'
 import search from './searchReducer'
 import ui from './uiReducer'
-
+import pub from './publicReducer'
+import user from './userReducer'
 
 const appReducer = combineReducers({
   people,
@@ -23,6 +24,8 @@ const appReducer = combineReducers({
   search,
   routerReducer,
   ui,
+  pub,
+  user,
   notifications: notificationsReducer()
   
 })
@@ -50,7 +53,6 @@ export const authErrors =
 
 export function withAuth(headers) {
   return (state) => { 
-    console.log(state)
     return ({
       ...headers,
       'Authorization': `Bearer ${accessToken(state)}`

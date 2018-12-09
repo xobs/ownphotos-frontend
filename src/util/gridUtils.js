@@ -1,3 +1,74 @@
+import store from '../store'
+import _ from 'lodash'
+
+store.subscribe(listener)
+
+function select(state) {
+ return state.ui
+}
+
+var gridType = 'dense'
+
+function listener() {
+ var ui = select(store.getState())
+ gridType = ui.gridType
+}
+
+
+export const calculateSharedPhotoGridCells = (groupedBySharerList,itemsPerRow) => {
+    var gridContents = []
+    var rowCursor = []
+  
+    groupedBySharerList.forEach((group)=>{
+      gridContents.push([group])
+      var currRowIdx = gridContents.length
+      _.reverse(_.sortBy(group.photos,'exif_timestamp')).forEach((photo,idx)=>{
+        if (idx === 0 ) {
+          rowCursor = []
+        }
+        if (idx > 0 && idx % itemsPerRow === 0) {
+          gridContents.push(rowCursor)
+        }
+        if (idx % itemsPerRow === 0) {
+          rowCursor = []
+        }
+        rowCursor.push(photo)
+        if (idx === group.photos.length-1) {
+          gridContents.push(rowCursor)        
+        }
+  
+      })
+    })
+    return {cellContents:gridContents}
+}
+
+export const calculateSharedAlbumGridCells = (groupedBySharerList,itemsPerRow) => {
+    var gridContents = []
+    var rowCursor = []
+  
+    groupedBySharerList.forEach((group)=>{
+      gridContents.push([group])
+      var currRowIdx = gridContents.length
+      group.albums.forEach((album,idx)=>{
+        if (idx === 0 ) {
+          rowCursor = []
+        }
+        if (idx > 0 && idx % itemsPerRow === 0) {
+          gridContents.push(rowCursor)
+        }
+        if (idx % itemsPerRow === 0) {
+          rowCursor = []
+        }
+        rowCursor.push(album)
+        if (idx === group.albums.length-1) {
+          gridContents.push(rowCursor)        
+        }
+      })
+    })
+    return {cellContents:gridContents}
+}
+
+
 export const calculateGridCells = (groupedByDateList,itemsPerRow) => {
     var gridContents = []
     var rowCursor = []
@@ -31,21 +102,41 @@ export const calculateGridCells = (groupedByDateList,itemsPerRow) => {
 export const calculateGridCellSize = (gridWidth) => {
     var numEntrySquaresPerRow
     
-    if (gridWidth < 600) {
-        numEntrySquaresPerRow = 2
-    } 
-    else if (gridWidth < 800) {
-        numEntrySquaresPerRow = 3
+    if (gridType==='dense') {
+        if (gridWidth < 600) {
+            numEntrySquaresPerRow = 2
+        } 
+        else if (gridWidth < 800) {
+            numEntrySquaresPerRow = 3
+        }
+        else if (gridWidth < 1000) {
+            numEntrySquaresPerRow = 5
+        }
+        else if (gridWidth < 1200) {
+            numEntrySquaresPerRow = 7
+        }
+        else {
+            numEntrySquaresPerRow = 8 
+        }
+    } else {
+        if (gridWidth < 600) {
+            numEntrySquaresPerRow = 1
+        } 
+        else if (gridWidth < 800) {
+            numEntrySquaresPerRow = 2
+        }
+        else if (gridWidth < 1000) {
+            numEntrySquaresPerRow = 3
+        }
+        else if (gridWidth < 1200) {
+            numEntrySquaresPerRow = 4
+        }
+        else {
+            numEntrySquaresPerRow = 4
+        }
     }
-    else if (gridWidth < 1000) {
-        numEntrySquaresPerRow = 5
-    }
-    else if (gridWidth < 1200) {
-        numEntrySquaresPerRow = 7
-    }
-    else {
-        numEntrySquaresPerRow = 8 
-    }
+
+
 
     var entrySquareSize = gridWidth / numEntrySquaresPerRow
     var numEntrySquaresPerRow = numEntrySquaresPerRow
