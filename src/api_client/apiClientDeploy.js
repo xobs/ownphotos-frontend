@@ -20,10 +20,10 @@ function listener() {
  }
 }
 
-export var serverAddress = 'changeme'
+export var serverAddress = process.env.OWNPHOTOS_URL;
 
 export var Server = axios.create({
-  baseURL: 'changeme/api/',
+  baseURL: serverAddress + '/api/',
   headers: {
     'Content-Type': 'application/json'
   },
